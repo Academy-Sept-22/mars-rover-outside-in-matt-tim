@@ -40,6 +40,7 @@ class MarsRoverAPIShould {
 
         String result = marsRoverAPI.getCoordinates();
 
+        verify(gPSReader).parse(roverLocation);
         assertEquals(result, coordinate);
     }
 
