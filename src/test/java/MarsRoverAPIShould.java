@@ -5,7 +5,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -17,13 +16,13 @@ class MarsRoverAPIShould {
     @Test
     void execute() {
         String commandString = "L";
-        List commands = List.of(Commands.LEFT);
-
-        given(commandParser.buildInstructions(commandString)).willReturn(commands);
-
+        List<Commands> instructions = List.of(Commands.LEFT);
+        given(commandParser.buildInstructions(commandString)).willReturn(instructions);
         MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParser, marsRover);
 
-        verify(marsRover).execute(commands);
+        marsRoverAPI.execute(commandString);
+
+        verify(marsRover).execute(instructions);
     }
 
 

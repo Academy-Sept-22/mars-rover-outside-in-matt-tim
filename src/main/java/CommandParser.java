@@ -1,5 +1,7 @@
+import java.util.List;
+
 public class CommandParser {
-    public Object buildInstructions(String commandString) {
+    public List<Commands> buildInstructions(String commandString) {
         throw new UnsupportedOperationException();
     }
 }

@@ -1,12 +1,17 @@
+import java.util.List;
+
 public class MarsRoverAPI {
-    private CommandParser commandParser;
+    private final CommandParser commandParser;
+    private final MarsRover marsRover;
 
     public MarsRoverAPI(CommandParser commandParser, MarsRover marsRover) {
         this.commandParser = commandParser;
+        this.marsRover = marsRover;
     }
 
     public void execute(String commands) {
-        throw new UnsupportedOperationException();
+        List<Commands> instructions = commandParser.buildInstructions(commands);
+        marsRover.execute(instructions);
     }
 
     public String getCoordinates() {
