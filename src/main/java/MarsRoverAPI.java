@@ -3,10 +3,12 @@ import java.util.List;
 public class MarsRoverAPI {
     private final CommandParser commandParser;
     private final MarsRover marsRover;
+    private GPSReader gPSReader;
 
-    public MarsRoverAPI(CommandParser commandParser, MarsRover marsRover) {
+    public MarsRoverAPI(CommandParser commandParser, MarsRover marsRover, GPSReader gPSReader) {
         this.commandParser = commandParser;
         this.marsRover = marsRover;
+        this.gPSReader = gPSReader;
     }
 
     public void execute(String commands) {
@@ -15,7 +17,8 @@ public class MarsRoverAPI {
     }
 
     public String getCoordinates() {
-        throw new UnsupportedOperationException();
+        RoverLocation location = marsRover.collectLocation();
+        return gPSReader.parse(location);
     }
 
 }
