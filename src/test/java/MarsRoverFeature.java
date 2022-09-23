@@ -7,7 +7,9 @@ public class MarsRoverFeature {
     void
     move_and_turn_when_given_commands() {
         CommandParser commandParser = new CommandParser();
-        MarsRover marsRover = new MarsRover();
+        RoverEngine engine = new RoverEngine();
+        SteeringWheel steeringWheel = new SteeringWheel();
+        MarsRover marsRover = new MarsRover(engine, steeringWheel);
         GPSReader gPSReader = new GPSReader();
 
         MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParser, marsRover, gPSReader);

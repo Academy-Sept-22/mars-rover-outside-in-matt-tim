@@ -1,8 +1,23 @@
 import java.util.List;
 
 public class MarsRover {
-    public void execute(List commands) {
-        throw new UnsupportedOperationException();
+    private RoverEngine engine;
+    private SteeringWheel steeringWheel;
+
+    public MarsRover(RoverEngine engine, SteeringWheel steeringWheel) {
+        this.engine = engine;
+        this.steeringWheel = steeringWheel;
+    }
+
+    public void execute(List<Commands> commands) {
+        for (Commands command : commands) {
+            if (command == Commands.RIGHT) {
+                this.steeringWheel.turnRight();
+            }
+            if (command == Commands.FORWARD) {
+                this.engine.move();
+            }
+        }
     }
 
     public RoverLocation collectLocation() {
