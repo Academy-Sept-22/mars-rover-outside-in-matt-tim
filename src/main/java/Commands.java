@@ -1,3 +1,3 @@
 public enum Commands {
-    LEFT
+    FORWARD, RIGHT, LEFT
 }
