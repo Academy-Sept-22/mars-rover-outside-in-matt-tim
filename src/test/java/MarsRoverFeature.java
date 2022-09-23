@@ -7,7 +7,8 @@ public class MarsRoverFeature {
     void
     move_and_turn_when_given_commands() {
         CommandParser commandParser = new CommandParser();
-        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParser);
+        MarsRover marsRover = new MarsRover();
+        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParser, marsRover);
         marsRoverAPI.execute("MRM");
 
         assertEquals("1:1:E",  marsRoverAPI.getCoordinates() );
