@@ -1,60 +1,44 @@
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
 
 class MarsRoverAPIShould {
-    @Mock CommandParser commandParser;
-    @Mock MarsRover marsRover;
 
-    @Mock
-    GPSReader gPSReader;
     private CommandParserStub commandParserStub;
+    private MarsRoverSpy marsRoverSpy;
+    private GPSReaderMock gpsReaderMock;
 
     @Test
     void execute() {
-//        Create stub
+        String commandString = "L";
         List<Commands> instructions = List.of(Commands.LEFT);
         commandParserStub = new CommandParserStub(instructions);
-        MarsRoverSpy marsRoverSpy = new MarsRoverSpy();
+        marsRoverSpy = new MarsRoverSpy();
+        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRoverSpy, gpsReaderMock);
 
-//        Implement stub
-        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRoverSpy, gPSReader);
-
-        String commandString = "L";
         marsRoverAPI.execute(commandString);
 
-        assertThat(marsRoverSpy.verify(), is("execute was called 1 times"));
         //verify(marsRover).execute(instructions);
+        marsRoverSpy.verifyCalledTimes(1);
     }
     @Test
-    void collects_location_and_converts_to_coordinates() throws Exception {
-        String expectedVerify = "Parse was called 1 times with the expected argument: RoverLocation{x=0, y=0, orientation='N'}";
+    void collects_location_and_converts_to_coordinates() {
         String coordinate = "0:0:N";
         RoverLocation roverLocation = new RoverLocation(0, 0, "N");
 
-        given(marsRover.collectLocation()).willReturn(roverLocation);
+        //given(marsRover.collectLocation()).willReturn(roverLocation);
+        MarsRoverStub marsRoverStub = new MarsRoverStub(roverLocation);
 
-        GPSReaderMock gpsReaderMock = new GPSReaderMock(coordinate, roverLocation);
         //given(gPSReader.parse(roverLocation)).willReturn(coordinate);
+        gpsReaderMock = new GPSReaderMock(coordinate, roverLocation);
 
-        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRover, gpsReaderMock);
+        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRoverStub, gpsReaderMock);
 
         String result = marsRoverAPI.getCoordinates();
 
-        assertThat(gpsReaderMock.verify(), is(expectedVerify));
+        gpsReaderMock.verifyCalledTimes(1);
         //verify(gPSReader).parse(roverLocation);
 
         assertEquals(result, coordinate);

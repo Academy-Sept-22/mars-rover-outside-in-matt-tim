@@ -16,7 +16,7 @@ public class MarsRoverAPI {
         marsRover.execute(instructions);
     }
 
-    public String getCoordinates() throws Exception {
+    public String getCoordinates()  {
         RoverLocation location = marsRover.collectLocation();
         return gPSReader.parse(location);
     }

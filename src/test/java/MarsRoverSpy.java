@@ -14,7 +14,12 @@ public class MarsRoverSpy extends MarsRover {
         counter++;
     }
 
-    public String verify() {
-        return "execute was called " + counter + " times";
+    public void verifyCalledTimes(int times) {
+        String errorMessage = "execute was called only " + counter + " times";
+
+        if (times != counter) {
+            throw new AssertionError(errorMessage);
+        }
     }
 }
+
