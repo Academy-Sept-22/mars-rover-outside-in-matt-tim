@@ -5,7 +5,7 @@ public class MarsRoverFeature {
 
     @Test
     void
-    move_and_turn_when_given_commands() {
+    move_and_turn_when_given_commands() throws Exception {
         CommandParser commandParser = new CommandParser();
         RoverEngine engine = new RoverEngine();
         SteeringWheel steeringWheel = new SteeringWheel();

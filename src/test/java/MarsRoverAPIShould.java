@@ -40,18 +40,23 @@ class MarsRoverAPIShould {
         //verify(marsRover).execute(instructions);
     }
     @Test
-    void collects_location_and_converts_to_coordinates() {
+    void collects_location_and_converts_to_coordinates() throws Exception {
+        String expectedVerify = "Parse was called 1 times with the expected argument: RoverLocation{x=0, y=0, orientation='N'}";
         String coordinate = "0:0:N";
         RoverLocation roverLocation = new RoverLocation(0, 0, "N");
 
         given(marsRover.collectLocation()).willReturn(roverLocation);
-        given(gPSReader.parse(roverLocation)).willReturn(coordinate);
 
-        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRover, gPSReader);
+        GPSReaderMock gpsReaderMock = new GPSReaderMock(coordinate, roverLocation);
+        //given(gPSReader.parse(roverLocation)).willReturn(coordinate);
+
+        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRover, gpsReaderMock);
 
         String result = marsRoverAPI.getCoordinates();
 
-        verify(gPSReader).parse(roverLocation);
+        assertThat(gpsReaderMock.verify(), is(expectedVerify));
+        //verify(gPSReader).parse(roverLocation);
+
         assertEquals(result, coordinate);
     }
 
