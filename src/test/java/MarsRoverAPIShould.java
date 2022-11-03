@@ -6,6 +6,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -19,11 +20,14 @@ class MarsRoverAPIShould {
     GPSReader gPSReader;
     @Test
     void execute() {
-        String commandString = "L";
+//        Create stub
         List<Commands> instructions = List.of(Commands.LEFT);
-        given(commandParser.buildInstructions(commandString)).willReturn(instructions);
-        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParser, marsRover, gPSReader);
+        CommandParserStub commandParserStub = new CommandParserStub(instructions);
 
+//        Implement stub
+        MarsRoverAPI marsRoverAPI = new MarsRoverAPI(commandParserStub, marsRover, gPSReader);
+
+        String commandString = "L";
         marsRoverAPI.execute(commandString);
 
         verify(marsRover).execute(instructions);
